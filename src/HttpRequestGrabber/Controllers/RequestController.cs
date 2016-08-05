@@ -16,15 +16,19 @@ namespace HttpRequestGrabber.Controllers
         [HttpPost]
         [HttpPut]
         [HttpPatch]
+        [HttpGet]
+        [HttpHead]
+        [HttpDelete]
+        [HttpOptions]
         public Task<IActionResult> Grab()
         {
             RequestStore.Push(new RequestInfo
             {
                 Received = DateTime.UtcNow,
                 Method = Request.Method,
-                RequestUri = Request.Path.Value,
+                RequestUri = Request.QueryString.HasValue ? Request.QueryString.Value : string.Empty,
                 Headers = Request.Headers.Select(h => h.Key + " " + String.Join(" ", h.Value.ToArray())).ToArray(),
-                Body = ReadBody(Request.Body),
+                Body = Request.Body != null ? ReadBody(Request.Body) : string.Empty,
             });
             return Task.FromResult<IActionResult>(Ok());
         }
