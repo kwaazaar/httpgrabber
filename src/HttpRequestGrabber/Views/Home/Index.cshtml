@@ -1,0 +1,22 @@
+﻿@model IEnumerable<RequestInfo>
+@{
+    ViewData["Title"] = "Home Page";
+}
+<h1>Requests ontvangen:</h1>
+@foreach(var ri in Model)
+{
+    <div class="row">
+        <div class="col-md-3">
+            @ri.Received
+        </div>
+        <div class="col-md-9">
+            @ri.Method&nbsp;@ri.RequestUri<br />
+            @foreach (var h in ri.Headers)
+            {
+                @h<br/>
+            }
+            <br/>
+            @ri.Body
+        </div>
+    </div>
+}
